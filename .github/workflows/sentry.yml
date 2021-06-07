@@ -1,0 +1,20 @@
+name: Sentry
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  sentry:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Sentry release
+      uses: getsentry/action-release@v1
+      env:
+        SENTRY_AUTH_TOKEN: 2d5b0401bf064cc3806248931c9bd7df422f56951487410cb1a5912ac31c27b7
+        SENTRY_ORG: p4-group1
+        SENTRY_PROJECT: laravel
