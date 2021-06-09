@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use League\Glide\ServerFactory;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use League\Glide\Responses\LaravelResponseFactory;
 
 class ImagesController extends Controller
 {
-    public function show(Filesystem $filesystem, Request $request, $path)
+    public function show(FilesystemAdapter $filesystem, Request $request, $path)
     {
         $server = ServerFactory::create(
             [
