@@ -140,3 +140,9 @@ Route::get('reports', [ReportsController::class, 'index'])
 Route::get('/img/{path}', [ImagesController::class, 'show'])
     ->where('path', '.*')
     ->name('image');
+
+// Sentry
+
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});

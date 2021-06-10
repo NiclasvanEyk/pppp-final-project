@@ -13,7 +13,8 @@ class ContactsController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Contacts/Index', [
+        return Inertia::render(
+            'Contacts/Index', [
             'filters' => Request::all('search', 'trashed'),
             'contacts' => Auth::user()->account->contacts()
                 ->with('organization')
@@ -21,38 +22,46 @@ class ContactsController extends Controller
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(10)
                 ->withQueryString()
-                ->through(fn ($contact) => [
+                ->through(
+                    fn ($contact) => [
                     'id' => $contact->id,
                     'name' => $contact->name,
                     'phone' => $contact->phone,
                     'city' => $contact->city,
                     'deleted_at' => $contact->deleted_at,
                     'organization' => $contact->organization ? $contact->organization->only('name') : null,
-                ]),
-        ]);
+                    ]
+                ),
+            ]
+        );
     }
 
     public function create()
     {
-        return Inertia::render('Contacts/Create', [
+        return Inertia::render(
+            'Contacts/Create', [
             'organizations' => Auth::user()->account
                 ->organizations()
                 ->orderBy('name')
                 ->get()
                 ->map
                 ->only('id', 'name'),
-        ]);
+            ]
+        );
     }
 
     public function store()
     {
         Auth::user()->account->contacts()->create(
-            Request::validate([
+            Request::validate(
+                [
                 'first_name' => ['required', 'max:50'],
                 'last_name' => ['required', 'max:50'],
-                'organization_id' => ['nullable', Rule::exists('organizations', 'id')->where(function ($query) {
-                    $query->where('account_id', Auth::user()->account_id);
-                })],
+                'organization_id' => ['nullable', Rule::exists('organizations', 'id')->where(
+                    function ($query) {
+                        $query->where('account_id', Auth::user()->account_id);
+                    }
+                )],
                 'email' => ['nullable', 'max:50', 'email'],
                 'phone' => ['nullable', 'max:50'],
                 'address' => ['nullable', 'max:150'],
@@ -60,7 +69,8 @@ class ContactsController extends Controller
                 'region' => ['nullable', 'max:50'],
                 'country' => ['nullable', 'max:2'],
                 'postal_code' => ['nullable', 'max:25'],
-            ])
+                ]
+            )
         );
 
         return Redirect::route('contacts')->with('success', 'Contact created.');
@@ -68,7 +78,8 @@ class ContactsController extends Controller
 
     public function edit(Contact $contact)
     {
-        return Inertia::render('Contacts/Edit', [
+        return Inertia::render(
+            'Contacts/Edit', [
             'contact' => [
                 'id' => $contact->id,
                 'first_name' => $contact->first_name,
@@ -88,13 +99,15 @@ class ContactsController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name'),
-        ]);
+            ]
+        );
     }
 
     public function update(Contact $contact)
     {
         $contact->update(
-            Request::validate([
+            Request::validate(
+                [
                 'first_name' => ['required', 'max:50'],
                 'last_name' => ['required', 'max:50'],
                 'organization_id' => [
@@ -108,7 +121,8 @@ class ContactsController extends Controller
                 'region' => ['nullable', 'max:50'],
                 'country' => ['nullable', 'max:2'],
                 'postal_code' => ['nullable', 'max:25'],
-            ])
+                ]
+            )
         );
 
         return Redirect::back()->with('success', 'Contact updated.');
