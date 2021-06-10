@@ -12,21 +12,25 @@ class OrganizationsController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Organizations/Index', [
+        return Inertia::render(
+            'Organizations/Index', [
             'filters' => Request::all('search', 'trashed'),
             'organizations' => Auth::user()->account->organizations()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(10)
                 ->withQueryString()
-                ->through(fn ($organization) => [
+                ->through(
+                    fn ($organization) => [
                     'id' => $organization->id,
                     'name' => $organization->name,
                     'phone' => $organization->phone,
                     'city' => $organization->city,
                     'deleted_at' => $organization->deleted_at,
-                ]),
-        ]);
+                    ]
+                ),
+            ]
+        );
     }
 
     public function create()
@@ -37,7 +41,8 @@ class OrganizationsController extends Controller
     public function store()
     {
         Auth::user()->account->organizations()->create(
-            Request::validate([
+            Request::validate(
+                [
                 'name' => ['required', 'max:100'],
                 'email' => ['nullable', 'max:50', 'email'],
                 'phone' => ['nullable', 'max:50'],
@@ -46,7 +51,8 @@ class OrganizationsController extends Controller
                 'region' => ['nullable', 'max:50'],
                 'country' => ['nullable', 'max:2'],
                 'postal_code' => ['nullable', 'max:25'],
-            ])
+                ]
+            )
         );
 
         return Redirect::route('organizations')->with('success', 'Organization created.');
@@ -54,7 +60,8 @@ class OrganizationsController extends Controller
 
     public function edit(Organization $organization)
     {
-        return Inertia::render('Organizations/Edit', [
+        return Inertia::render(
+            'Organizations/Edit', [
             'organization' => [
                 'id' => $organization->id,
                 'name' => $organization->name,
@@ -68,13 +75,15 @@ class OrganizationsController extends Controller
                 'deleted_at' => $organization->deleted_at,
                 'contacts' => $organization->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
             ],
-        ]);
+            ]
+        );
     }
 
     public function update(Organization $organization)
     {
         $organization->update(
-            Request::validate([
+            Request::validate(
+                [
                 'name' => ['required', 'max:100'],
                 'email' => ['nullable', 'max:50', 'email'],
                 'phone' => ['nullable', 'max:50'],
@@ -83,7 +92,8 @@ class OrganizationsController extends Controller
                 'region' => ['nullable', 'max:50'],
                 'country' => ['nullable', 'max:2'],
                 'postal_code' => ['nullable', 'max:25'],
-            ])
+                ]
+            )
         );
 
         return Redirect::back()->with('success', 'Organization updated.');
