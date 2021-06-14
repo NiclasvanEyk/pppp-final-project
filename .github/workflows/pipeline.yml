@@ -31,7 +31,7 @@ jobs:
     - name: action-php-codesniffer
       uses: tinovyatkin/action-php-codesniffer@v1
       with:
-        files: "./app"
+        files: "**"
         phpcs_path: ./vendor/bin/phpcs
     - name: Generate key
       run: php artisan key:generate
