@@ -135,6 +135,7 @@ class ContactsController extends Controller
         return Redirect::back()->with('success', 'Contact deleted.');
     }
 
+
     public function restore(Contact $contact)
     {
         $contact->restore();
