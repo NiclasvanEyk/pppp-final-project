@@ -131,7 +131,7 @@ class ContactsController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
-
+        $a = 1;
         return Redirect::back()->with('success', 'Contact deleted.');
     }
 
