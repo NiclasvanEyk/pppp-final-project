@@ -57,7 +57,7 @@ class ContactsController extends Controller
                 [
                 'first_name' => ['required', 'max:50'],
                 'last_name' => ['required', 'max:50'],
-                'organization_id' => ['nullable', Rule::exists('organizations', 'id')->where(
+                'organization_id' =>  ['nullable', Rule::exists('organizations', 'id')->where(
                     function ($query) {
                         $query->where('account_id', Auth::user()->account_id);
                     }
