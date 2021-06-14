@@ -28,6 +28,9 @@ jobs:
       run: ./vendor/bin/phpcs --report=source ./app || true
     - name: action-php-codesniffer
       uses: tinovyatkin/action-php-codesniffer@v1
+      with:
+        files: "**.php"
+        phpcs_path: ./vendor/bin/phpcs
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
