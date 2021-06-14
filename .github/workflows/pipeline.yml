@@ -35,6 +35,7 @@ jobs:
       with:
         files: "**.php"
         phpcs_path: ./vendor/bin/phpcs
+        scope: 'file'
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
