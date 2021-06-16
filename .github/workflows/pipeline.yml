@@ -54,6 +54,6 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: |
-      chmod -R 0755 vendor/laravel/dusk/bin/
-      php artisan dusk
+        chmod -R 0755 vendor/laravel/dusk/bin/
+        php artisan dusk
 
