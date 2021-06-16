@@ -23,7 +23,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-suggest --optimize-autoloader
     - name: code sniffer
       run: ./vendor/bin/phpcs --report=source ./app || true
     - name: Generate key
@@ -54,6 +54,9 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: |
+        php artisan migrate
+        php artisan db:seed
+        php artisan config:cache
         chmod -R 0755 vendor/laravel/dusk/bin/
         php artisan dusk
 
