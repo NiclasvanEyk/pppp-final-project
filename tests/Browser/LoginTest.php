@@ -28,17 +28,17 @@ class LoginTest extends DuskTestCase
         ]);
     }
 
-    // public function testLoginMissingPassword()
-    // {
-    //   $this->browse(function (Browser $browser) {
-    //     $browser->visit(new Login)
-    //             ->type('@email', 'johndoe@example.com')
-    //             ->type('@password', ' ')
-    //             ->press('Login')
-    //             ->waitForText('The password field is required')
-    //             ->assertSee('The password field is required');
-    //   });
-    // }
+    public function testLoginMissingPassword()
+    {
+      $this->browse(function (Browser $browser) {
+        $browser->visit(new Login)
+                ->type('@email', 'johndoe@example.com')
+                ->type('@password', ' ')
+                ->press('Login')
+                ->waitForText('The password field is required')
+                ->assertSee('The password field is required');
+      });
+    }
 
     public function testLoginIncorrectPassword()
     {
@@ -52,16 +52,16 @@ class LoginTest extends DuskTestCase
       });
     }
 
-    // public function testLoginCorrectPassword()
-    // {
-    //   $this->browse(function (Browser $browser) {
-    //     $browser->visit(new Login)
-    //             ->type('@email', 'johndoe@example.com')
-    //             ->type('@password', 'secret')
-    //             ->press('Login')
-    //             ->waitForText('Dashboard')
-    //             ->on(new Dashboard);
-    //   });
-    // }
+    public function testLoginCorrectPassword()
+    {
+      $this->browse(function (Browser $browser) {
+        $browser->visit(new Login)
+                ->type('@email', 'johndoe@example.com')
+                ->type('@password', 'secret')
+                ->press('Login')
+                ->waitForText('Dashboard')
+                ->on(new Dashboard);
+      });
+    }
 }
 
