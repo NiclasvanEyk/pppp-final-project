@@ -23,7 +23,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-suggest --optimize-autoloader
     - name: code sniffer
       run: ./vendor/bin/phpcs --report=source ./app || true
     - name: Generate key
@@ -41,3 +41,19 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Upgrade Chrome Driver
+      run: php artisan dusk:chrome-driver
+    - name: Start Chrome Driver
+      run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+    - name: Run Laravel Server
+      run: php artisan serve > /dev/null 2>&1 &
+    - name: Run Dusk Tests
+      env:
+        APP_ENV: local
+        APP_URL: "http://127.0.0.1:8000"
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: |
+        chmod -R 0755 vendor/laravel/dusk/bin/
+        php artisan dusk --process-isolation
+
