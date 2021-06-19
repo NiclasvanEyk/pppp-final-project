@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Service\UserService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -13,6 +15,14 @@ use Inertia\Inertia;
 
 class UsersController extends Controller
 {
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+
     public function index()
     {
         return Inertia::render(
@@ -97,26 +107,16 @@ class UsersController extends Controller
             return Redirect::back()->with('error', 'Updating the demo user is not allowed.');
         }
 
-        Request::validate(
-            [
-            'first_name' => ['required', 'max:50'],
-            'last_name' => ['required', 'max:50'],
-            'email' => ['required', 'max:50', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable'],
-            'owner' => ['required', 'boolean'],
-            'photo' => ['nullable', 'image'],
-            ]
+        // This automatically validates the input data, as FormRequests
+        // validate their data after being resolved out of the DI container.
+        $request = resolve(UpdateUserRequest::class);
+
+        $this->userService->update(
+            $user,
+            $request->getUpdatedUserAttributes(),
+            $request->getPhoto(),
+            $request->getPassword()
         );
-
-        $user->update(Request::only('first_name', 'last_name', 'email', 'owner'));
-
-        if (Request::file('photo')) {
-            $user->update(['photo_path' => Request::file('photo')->store('users')]);
-        }
-
-        if (Request::get('password')) {
-            $user->update(['password' => Request::get('password')]);
-        }
 
         return Redirect::back()->with('success', 'User updated.');
     }
