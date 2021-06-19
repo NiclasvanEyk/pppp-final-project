@@ -16,7 +16,8 @@ class UsersController extends Controller
     public function index()
     {
         return Inertia::render(
-            'Users/Index', [
+            'Users/Index',
+            [
             'filters' => Request::all('search', 'role', 'trashed'),
             'users' => Auth::user()->account->users()
                 ->orderByName()
@@ -28,7 +29,9 @@ class UsersController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'owner' => $user->owner,
-                    'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 40, 'h' => 40, 'fit' => 'crop']) : null,
+                    'photo' => $user->photo_path
+                        ? URL::route('image', ['path' => $user->photo_path, 'w' => 40, 'h' => 40, 'fit' => 'crop'])
+                        : null,
                     'deleted_at' => $user->deleted_at,
                     ]
                 ),
@@ -71,14 +74,17 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         return Inertia::render(
-            'Users/Edit', [
+            'Users/Edit',
+            [
             'user' => [
                 'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'email' => $user->email,
                 'owner' => $user->owner,
-                'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 60, 'h' => 60, 'fit' => 'crop']) : null,
+                'photo' => $user->photo_path
+                    ? URL::route('image', ['path' => $user->photo_path, 'w' => 60, 'h' => 60, 'fit' => 'crop'])
+                    : null,
                 'deleted_at' => $user->deleted_at,
             ],
             ]
