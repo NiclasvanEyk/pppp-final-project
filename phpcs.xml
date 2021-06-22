@@ -1,0 +1,17 @@
+<ruleset  name="PHP_CodeSniffer">
+    <description>PHPCS configuration file.</description>
+    <file>app</file>
+
+    <!-- exclude our migrations directory from the violation check-->
+    <exclude-pattern>*/migrations/*</exclude-pattern>
+
+    <!-- Our base rule: set to PSR12-->
+    <rule  ref="PSR12"/>
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="3"/>
+        </properties>
+    </rule>
+
+
+</ruleset>

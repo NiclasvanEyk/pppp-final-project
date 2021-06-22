@@ -14,7 +14,8 @@ class ContactsController extends Controller
     public function index()
     {
         return Inertia::render(
-            'Contacts/Index', [
+            'Contacts/Index',
+            [
             'filters' => Request::all('search', 'trashed'),
             'contacts' => Auth::user()->account->contacts()
                 ->with('organization')
@@ -39,7 +40,8 @@ class ContactsController extends Controller
     public function create()
     {
         return Inertia::render(
-            'Contacts/Create', [
+            'Contacts/Create',
+            [
             'organizations' => Auth::user()->account
                 ->organizations()
                 ->orderBy('name')
@@ -79,7 +81,8 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         return Inertia::render(
-            'Contacts/Edit', [
+            'Contacts/Edit',
+            [
             'contact' => [
                 'id' => $contact->id,
                 'first_name' => $contact->first_name,
@@ -112,7 +115,9 @@ class ContactsController extends Controller
                 'last_name' => ['required', 'max:50'],
                 'organization_id' => [
                     'nullable',
-                    Rule::exists('organizations', 'id')->where(fn ($query) => $query->where('account_id', Auth::user()->account_id)),
+                    Rule::exists('organizations', 'id')->where(
+                        fn ($query) => $query->where('account_id', Auth::user()->account_id)
+                    ),
                 ],
                 'email' => ['nullable', 'max:50', 'email'],
                 'phone' => ['nullable', 'max:50'],

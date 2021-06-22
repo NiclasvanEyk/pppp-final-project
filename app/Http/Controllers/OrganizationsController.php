@@ -13,7 +13,8 @@ class OrganizationsController extends Controller
     public function index()
     {
         return Inertia::render(
-            'Organizations/Index', [
+            'Organizations/Index',
+            [
             'filters' => Request::all('search', 'trashed'),
             'organizations' => Auth::user()->account->organizations()
                 ->orderBy('name')
@@ -61,7 +62,8 @@ class OrganizationsController extends Controller
     public function edit(Organization $organization)
     {
         return Inertia::render(
-            'Organizations/Edit', [
+            'Organizations/Edit',
+            [
             'organization' => [
                 'id' => $organization->id,
                 'name' => $organization->name,
